@@ -20,5 +20,5 @@ public:
 	ATank * GetControllerTank() const;
 	ATank * GetEnemyTank() const;
 	void BeginPlay() override;
-	
+	void Tick(float DeltaTime) override;
 };

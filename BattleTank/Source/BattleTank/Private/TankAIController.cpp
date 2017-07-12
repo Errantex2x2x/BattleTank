@@ -3,8 +3,17 @@
 #include "TankAIController.h"
 #include "TankPlayerController.h"
 
+void ATankAIController::BeginPlay()
+{
+	Super::BeginPlay();
+	UE_LOG(LogTemp, Log, TEXT("AI controller possessing %s "), *GetControllerTank()->GetName());
+	UE_LOG(LogTemp, Log, TEXT("AI WILL DESTROY %s "), *GetEnemyTank()->GetName());
+}
 
-
+void ATankAIController::Tick(float DeltaTime)
+{
+	GetControllerTank()->AimAt(GetEnemyTank()->GetActorLocation());
+}
 
 ATank * ATankAIController::GetControllerTank() const
 {
@@ -18,10 +27,4 @@ ATank * ATankAIController::GetEnemyTank() const
 		return (Cast<ATankPlayerController>(pc))->GetControllerTank();
 	else
 		return nullptr;
-}
-
-void ATankAIController::BeginPlay()
-{
-	UE_LOG(LogTemp, Log, TEXT("AI controller possessing %s "), *GetControllerTank()->GetName());
-	UE_LOG(LogTemp, Log, TEXT("AI WILL DESTROY %s "), *GetEnemyTank()->GetName());
 }

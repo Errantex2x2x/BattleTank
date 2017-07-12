@@ -33,10 +33,8 @@ void ATankPlayerController::AimTowardsCrosshair()
 	FVector HitLocation;
 	if (GetSightRayHitLocation(HitLocation))
 	{
-		UE_LOG(LogTemp, Log, TEXT("Aiming at %s"), *HitLocation.ToString());
+		GetControllerTank()->AimAt(HitLocation);
 	}
-
-	//Line-trace 
 }
 
 bool ATankPlayerController::GetSightRayHitLocation(FVector & OutHitLocation) const
