@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "TankAimingComponent.h"
 #include "Kismet/GameplayStaticsTypes.h"
 #include "Kismet/GameplayStatics.h"
 #include "TankBarrel.h"
+#include "TankAimingComponent.h"
 
 
 // Sets default values for this component's properties
@@ -45,7 +45,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	FVector OutLaunchVelocity;
 	FVector StartLocation = Barrel->GetSocketLocation("FireHole");
 
-	if (UGameplayStatics::SuggestProjectileVelocity(this, OutLaunchVelocity, Barrel->GetSocketLocation("FireHole"), HitLocation, LaunchSpeed, ESuggestProjVelocityTraceOption::DoNotTrace))
+	if (UGameplayStatics::SuggestProjectileVelocity(this, OutLaunchVelocity, Barrel->GetSocketLocation("FireHole"), HitLocation, LaunchSpeed,false,0,0,ESuggestProjVelocityTraceOption::DoNotTrace))
 	{
 		FVector AimDirection = OutLaunchVelocity.GetSafeNormal();
 		UE_LOG(LogTemp, Log, TEXT("%s Aiming at %s from %s"), *GetOwner()->GetName(), *AimDirection.ToString(), Barrel ? *Barrel->GetComponentLocation().ToString() : *FVector::ZeroVector.ToString());
@@ -57,8 +57,9 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 {
 	FRotator CurrentRotation = Barrel->GetForwardVector().Rotation();
 	FRotator WantedRotation = AimDirection.Rotation();
-	FRotator Delta = CurrentRotation - Delta;
+	FRotator Delta = WantedRotation - CurrentRotation;
 	
 	Barrel->Elevate(Delta.Pitch);
+	UE_LOG(LogTemp, Log, TEXT("Pitch delta is %f"), Delta.Pitch);
 	//Barrel->GetForwardVector().Rotation(Quater)
 }
