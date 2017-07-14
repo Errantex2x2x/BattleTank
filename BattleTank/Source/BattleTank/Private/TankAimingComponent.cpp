@@ -1,9 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "TankAimingComponent.h"
 #include "Kismet/GameplayStaticsTypes.h"
 #include "Kismet/GameplayStatics.h"
 #include "TankBarrel.h"
-#include "TankAimingComponent.h"
+#include "TankTurret.h"
 
 
 // Sets default values for this component's properties
@@ -16,9 +17,10 @@ UTankAimingComponent::UTankAimingComponent()
 }
 
 
-void UTankAimingComponent::SetBarrelReference(UTankBarrel * InBarrel)
+void UTankAimingComponent::SetComponentsReference(UTankBarrel * InBarrel, UTankTurret * InTurret)
 {
 	Barrel = InBarrel;
+	Turret = InTurret;
 }
 
 // Called when the game starts
@@ -48,8 +50,9 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	if (UGameplayStatics::SuggestProjectileVelocity(this, OutLaunchVelocity, Barrel->GetSocketLocation("FireHole"), HitLocation, LaunchSpeed,false,0,0,ESuggestProjVelocityTraceOption::DoNotTrace))
 	{
 		FVector AimDirection = OutLaunchVelocity.GetSafeNormal();
-		UE_LOG(LogTemp, Log, TEXT("%s Aiming at %s from %s"), *GetOwner()->GetName(), *AimDirection.ToString(), Barrel ? *Barrel->GetComponentLocation().ToString() : *FVector::ZeroVector.ToString());
+		//UE_LOG(LogTemp, Log, TEXT("%s Aiming at %s from %s"), *GetOwner()->GetName(), *AimDirection.ToString(), Barrel ? *Barrel->GetComponentLocation().ToString() : *FVector::ZeroVector.ToString());
 		MoveBarrel(AimDirection);
+		MoveTurret(AimDirection);
 	}
 }
 
@@ -60,6 +63,22 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 	FRotator Delta = WantedRotation - CurrentRotation;
 	
 	Barrel->Elevate(Delta.Pitch);
-	UE_LOG(LogTemp, Log, TEXT("Pitch delta is %f"), Delta.Pitch);
+	//UE_LOG(LogTemp, Log, TEXT("Pitch delta is %f"), Delta.Pitch);
 	//Barrel->GetForwardVector().Rotation(Quater)
+}
+
+
+void UTankAimingComponent::MoveTurret(FVector AimDirection)
+{
+	FRotator CurrentRotation = Barrel->GetForwardVector().Rotation();
+	FRotator WantedRotation = AimDirection.Rotation();
+	float DeltaX = WantedRotation.Yaw - CurrentRotation.Yaw;
+
+	if (DeltaX > 180.0f)
+		DeltaX = DeltaX - 360;
+	else if (DeltaX < -180.0f)
+		DeltaX = DeltaX + 360;
+
+	Turret->ChangeAzimuth(DeltaX);
+
 }
