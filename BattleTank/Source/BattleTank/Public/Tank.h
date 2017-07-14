@@ -26,7 +26,7 @@ public:
 	float LaunchSpeed;
 
 	UFUNCTION(BlueprintCallable, Category = Setup)
-	void SetBarrelReference(UStaticMeshComponent * InBarrel);
+	void SetBarrelReference(UTankBarrel * InBarrel);
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
