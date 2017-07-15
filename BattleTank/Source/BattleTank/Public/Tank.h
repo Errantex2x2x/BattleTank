@@ -7,6 +7,7 @@
 #include "Tank.generated.h"
 
 class UTankAimingComponent;
+class AProjectile;
 
 UCLASS()
 class BATTLETANK_API ATank : public APawn
@@ -25,9 +26,15 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Fire();
-
-	UPROPERTY(EditAnywhere, Category = Firing)
+	
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float LaunchSpeed;
+
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float FireCoolDownSeconds;
+
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	TSubclassOf<AProjectile> ProjectileBlueprint;
 
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetComponentsReference(UTankBarrel * InBarrel, UTankTurret * InTurret);
@@ -38,6 +45,9 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	float LastFireTime = 0;
 
 	UTankAimingComponent * TankAimingComponent = nullptr;
+
+	UTankBarrel * Barrel;
 };
