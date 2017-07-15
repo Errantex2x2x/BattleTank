@@ -12,7 +12,6 @@ ATankPlayerController::ATankPlayerController()
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Log, TEXT("Possessing %s"), *GetControllerTank()->GetName());
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
@@ -47,7 +46,6 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector & OutHitLocation) con
 	FVector WorldDir;
 	if (DeprojectScreenPositionToWorld(ScreenLoc.X, ScreenLoc.Y, WorldLoc, WorldDir))//Gets direction basing on screen position
 	{
-		//UE_LOG(LogTemp, Log, TEXT("World direction: %s"), *WorldDir.ToString());
 		return GetLookVectorHitLocation(WorldDir, OutHitLocation);
 	}
 	return true;

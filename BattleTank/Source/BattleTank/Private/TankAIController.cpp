@@ -7,8 +7,6 @@
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Log, TEXT("AI controller possessing %s "), *GetControllerTank()->GetName());
-	UE_LOG(LogTemp, Log, TEXT("AI WILL DESTROY %s "), *GetEnemyTank()->GetName());
 }
 
 void ATankAIController::Tick(float DeltaTime)

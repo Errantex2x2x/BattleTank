@@ -50,7 +50,6 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	if (UGameplayStatics::SuggestProjectileVelocity(this, OutLaunchVelocity, Barrel->GetSocketLocation("FireHole"), HitLocation, LaunchSpeed,false,0,0,ESuggestProjVelocityTraceOption::DoNotTrace))
 	{
 		FVector AimDirection = OutLaunchVelocity.GetSafeNormal();
-		//UE_LOG(LogTemp, Log, TEXT("%s Aiming at %s from %s"), *GetOwner()->GetName(), *AimDirection.ToString(), Barrel ? *Barrel->GetComponentLocation().ToString() : *FVector::ZeroVector.ToString());
 		MoveBarrel(AimDirection);
 		MoveTurret(AimDirection);
 	}
@@ -63,8 +62,6 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 	FRotator Delta = WantedRotation - CurrentRotation;
 	
 	Barrel->Elevate(Delta.Pitch);
-	//UE_LOG(LogTemp, Log, TEXT("Pitch delta is %f"), Delta.Pitch);
-	//Barrel->GetForwardVector().Rotation(Quater)
 }
 
 
