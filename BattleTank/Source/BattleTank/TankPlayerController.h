@@ -17,10 +17,11 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 	
 public:
 	ATankPlayerController();
-	ATank * GetControllerTank() const;
 	void BeginPlay() override;
 	void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintCallable)
+		ATank * GetControllerTank() const;
 	UPROPERTY(EditDefaultsOnly)
 		float CrosshairXLocation;
 	UPROPERTY(EditDefaultsOnly)

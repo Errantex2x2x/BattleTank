@@ -4,46 +4,28 @@
 #include "Kismet/GameplayStaticsTypes.h"
 #include "Kismet/GameplayStatics.h"
 #include "TankBarrel.h"
+#include "Projectile.h"
 #include "TankTurret.h"
 
 
-// Sets default values for this component's properties
+
 UTankAimingComponent::UTankAimingComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-	// ...
+
+	FiringStatus = EFiringStatus::Reloading;
+	FireCoolDownSeconds = 1;
+	LaunchSpeed = 4000;
 }
 
-
-void UTankAimingComponent::SetComponentsReference(UTankBarrel * InBarrel, UTankTurret * InTurret)
+void UTankAimingComponent::Initialize(UTankBarrel * InBarrel, UTankTurret * InTurret)
 {
 	Barrel = InBarrel;
 	Turret = InTurret;
 }
 
-// Called when the game starts
-void UTankAimingComponent::BeginPlay()
+void UTankAimingComponent::AimAt(FVector HitLocation)
 {
-	Super::BeginPlay();
-
-	// ...
-	
-}
-
-
-// Called every frame
-void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
-}
-
-void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
-{
-	
 	FVector OutLaunchVelocity;
 	FVector StartLocation = Barrel->GetSocketLocation("FireHole");
 
@@ -52,6 +34,16 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 		FVector AimDirection = OutLaunchVelocity.GetSafeNormal();
 		MoveBarrel(AimDirection);
 		MoveTurret(AimDirection);
+	}
+}
+
+void UTankAimingComponent::Fire()
+{
+	if (GetWorld()->GetTimeSeconds() - LastFireTime > FireCoolDownSeconds)
+	{
+		LastFireTime = GetWorld()->GetTimeSeconds();
+		AProjectile * Proj = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, Barrel->GetSocketLocation("FireHole"), Barrel->GetSocketRotation("FireHole"));
+		Proj->LaunchProjectile(LaunchSpeed);
 	}
 }
 

@@ -6,8 +6,17 @@
 #include "Components/ActorComponent.h"
 #include "TankAimingComponent.generated.h"
 
+UENUM()
+enum class EFiringStatus: uint8
+{
+	Aiming,
+	Locked,
+	Reloading
+};
+
 class UTankBarrel;
 class UTankTurret;
+class AProjectile;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANK_API UTankAimingComponent : public UActorComponent
@@ -16,18 +25,31 @@ class BATTLETANK_API UTankAimingComponent : public UActorComponent
 
 public:	
 	UTankAimingComponent();
-	void SetComponentsReference(UTankBarrel * InBarrel, UTankTurret * InTurret);
+
+	UFUNCTION(BlueprintCallable)
+	void Initialize(UTankBarrel * InBarrel, UTankTurret * InTurret);
+
+	void Fire();
+	void AimAt(FVector HitLocation);
 
 protected:
-	virtual void BeginPlay() override;
 	void MoveBarrel(FVector AimDirection);
 	void MoveTurret(FVector AimDirection);
 
 	UTankBarrel * Barrel;
 	UTankTurret * Turret;
 
-public:	
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	void AimAt(FVector HitLocation, float LaunchSpeed);	
+	float LastFireTime = 0;
 
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float FireCoolDownSeconds;
+
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float LaunchSpeed;
+
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	TSubclassOf<AProjectile> ProjectileBlueprint;
+
+	UPROPERTY(BlueprintReadOnly, Category = "State")
+	EFiringStatus FiringStatus;
 };
