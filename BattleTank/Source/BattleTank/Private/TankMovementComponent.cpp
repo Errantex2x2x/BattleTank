@@ -22,3 +22,15 @@ void UTankMovementComponent::IntendTurn(float Throw)
 	TrackR->SetThrottle(-Throw);
 	TrackL->SetThrottle(Throw);
 }
+
+void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed)
+{
+	FVector AIForwardIntention = MoveVelocity.GetSafeNormal();
+	FVector CurrentDirection = GetOwner()->GetActorForwardVector();
+
+	IntendMoveForward(FVector::DotProduct(AIForwardIntention, CurrentDirection));
+	IntendTurn(FVector::CrossProduct(CurrentDirection, AIForwardIntention).Z);
+
+	//UE_LOG(LogTemp, Log, TEXT("Requested move: %f"), FVector::DotProduct(AIForwardIntention, CurrentDirection));
+}
+

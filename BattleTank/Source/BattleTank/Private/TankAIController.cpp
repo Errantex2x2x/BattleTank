@@ -13,6 +13,7 @@ void ATankAIController::Tick(float DeltaTime)
 {
 	GetControllerTank()->AimAt(GetEnemyTank()->GetActorLocation());
 	GetControllerTank()->Fire();
+	MoveToActor(GetEnemyTank(),5);
 }
 
 ATank * ATankAIController::GetControllerTank() const
