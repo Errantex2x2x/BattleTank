@@ -7,6 +7,7 @@
 #include "Tank.generated.h"
 
 class UTankAimingComponent;
+class UTankMovementComponent;
 class AProjectile;
 
 UCLASS()
@@ -47,7 +48,9 @@ protected:
 	virtual void BeginPlay() override;
 	float LastFireTime = 0;
 
-	UTankAimingComponent * TankAimingComponent = nullptr;
+	UPROPERTY(BlueprintReadOnly)
+	UTankMovementComponent * TankMovementComponent = nullptr;
 
+	UTankAimingComponent * TankAimingComponent = nullptr;
 	UTankBarrel * Barrel;
 };
