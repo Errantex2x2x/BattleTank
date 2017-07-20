@@ -3,7 +3,6 @@
 #include "Tank.h"
 #include "TankBarrel.h"
 #include "TankAimingComponent.h"
-#include "TankMovementComponent.h"
 
 ATank::ATank()
 {
@@ -12,11 +11,13 @@ ATank::ATank()
 
 void ATank::AimAt(FVector HitLocation)
 {
+	if (!ensure(TankAimingComponent)) return;
 	TankAimingComponent->AimAt(HitLocation);
 }
 
 void ATank::Fire()
 {
+	if (!ensure(TankAimingComponent)) return;
 	TankAimingComponent->Fire();
 }
 

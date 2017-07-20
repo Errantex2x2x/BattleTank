@@ -24,6 +24,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Fire();
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
+	void AimingComponentFound(UTankAimingComponent * AimingComponentRef);
+
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 

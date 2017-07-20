@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankPlayerController.h"
+#include "TankAimingComponent.h"
+#include "Tank.h"
 
 ATankPlayerController::ATankPlayerController()
 {
@@ -12,6 +14,9 @@ ATankPlayerController::ATankPlayerController()
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+	UTankAimingComponent * AimingComp = GetControllerTank()->FindComponentByClass<UTankAimingComponent>();
+	if (AimingComp)
+		AimingComponentFound(AimingComp);
 }
 
 void ATankPlayerController::Tick(float DeltaTime)

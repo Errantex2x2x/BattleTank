@@ -2,11 +2,12 @@
 
 #pragma once
 
-#include "Tank.h"
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "TankPlayerController.generated.h"
 
+class UTankAimingComponent;
+class UTank;
 /**
  * 
  */
@@ -28,6 +29,10 @@ public:
 		float CrosshairYLocation;
 	UPROPERTY(EditDefaultsOnly)
 		float LineTraceRange;
+
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
+		void AimingComponentFound(UTankAimingComponent * AimingComponentRef);
 
 private:
 	//Moves tank barrel so that it points towards the crosshair
