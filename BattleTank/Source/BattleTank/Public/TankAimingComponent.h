@@ -29,7 +29,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Initialize(UTankBarrel * InBarrel, UTankTurret * InTurret);
 
+	UFUNCTION(BlueprintCallable)
 	void Fire();
+
 	void AimAt(FVector HitLocation);
 
 protected:

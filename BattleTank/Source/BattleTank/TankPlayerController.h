@@ -40,4 +40,6 @@ private:
 	//Returns wether we are aiming towards a collider, if true we load the location in the given variable
 	bool GetSightRayHitLocation(FVector &OutHitLocation) const;
 	bool GetLookVectorHitLocation(FVector WorldDir, FVector & OutHitLocation) const;
+
+	UTankAimingComponent * AimingComponent;
 };

@@ -14,9 +14,9 @@ ATankPlayerController::ATankPlayerController()
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	UTankAimingComponent * AimingComp = GetControllerTank()->FindComponentByClass<UTankAimingComponent>();
-	if (AimingComp)
-		AimingComponentFound(AimingComp);
+	AimingComponent = GetControllerTank()->FindComponentByClass<UTankAimingComponent>();
+	if (AimingComponent)
+		AimingComponentFound(AimingComponent);
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
@@ -37,7 +37,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 	FVector HitLocation;
 	if (GetSightRayHitLocation(HitLocation))
 	{
-		GetControllerTank()->AimAt(HitLocation);
+		AimingComponent->AimAt(HitLocation);
 	}
 }
 

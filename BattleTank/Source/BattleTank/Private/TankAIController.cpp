@@ -2,17 +2,19 @@
 
 #include "TankAIController.h"
 #include "Tank.h"
+#include "TankAimingComponent.h"
 #include "TankPlayerController.h"
 
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
+	AimingComponent = GetControllerTank()->FindComponentByClass<UTankAimingComponent>();
 }
 
 void ATankAIController::Tick(float DeltaTime)
 {
-	GetControllerTank()->AimAt(GetEnemyTank()->GetActorLocation());
-	GetControllerTank()->Fire();
+	AimingComponent->AimAt(GetEnemyTank()->GetActorLocation());
+	AimingComponent->Fire();
 	MoveToActor(GetEnemyTank(),5);
 }
 

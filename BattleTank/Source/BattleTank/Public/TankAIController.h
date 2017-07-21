@@ -7,6 +7,7 @@
 #include "TankAIController.generated.h"
 
 class ATank;
+class UTankAimingComponent;
 
 /**
  * 
@@ -22,4 +23,8 @@ public:
 	ATank * GetEnemyTank() const;
 	void BeginPlay() override;
 	void Tick(float DeltaTime) override;
+
+private:
+	UTankAimingComponent * AimingComponent;
+
 };

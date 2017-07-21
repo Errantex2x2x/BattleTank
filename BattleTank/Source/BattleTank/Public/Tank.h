@@ -6,9 +6,6 @@
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
-class UTankAimingComponent;
-class UTankMovementComponent;
-
 UCLASS()
 class BATTLETANK_API ATank : public APawn
 {
@@ -17,25 +14,4 @@ class BATTLETANK_API ATank : public APawn
 public:
 	// Sets default values for this pawn's properties
 	ATank();
-
-	// Aim at location
-	void AimAt(FVector HitLocation);
-
-	UFUNCTION(BlueprintCallable)
-	void Fire();
-
-	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
-	void AimingComponentFound(UTankAimingComponent * AimingComponentRef);
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-protected:
-
-	UPROPERTY(BlueprintReadWrite)
-	UTankMovementComponent * TankMovementComponent = nullptr;
-
-	UPROPERTY(BlueprintReadWrite)
-	UTankAimingComponent * TankAimingComponent = nullptr;
-	
 };
