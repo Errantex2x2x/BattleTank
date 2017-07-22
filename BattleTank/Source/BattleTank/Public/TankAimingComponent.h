@@ -25,10 +25,11 @@ class BATTLETANK_API UTankAimingComponent : public UActorComponent
 
 public:	
 	UTankAimingComponent();
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
 	UFUNCTION(BlueprintCallable)
 	void Initialize(UTankBarrel * InBarrel, UTankTurret * InTurret);
-
+	
 	UFUNCTION(BlueprintCallable)
 	void Fire();
 
@@ -37,6 +38,8 @@ public:
 protected:
 	void MoveBarrel(FVector AimDirection);
 	void MoveTurret(FVector AimDirection);
+
+	bool IsBarrelMoving();
 
 	UTankBarrel * Barrel;
 	UTankTurret * Turret;
@@ -54,4 +57,8 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	EFiringStatus FiringStatus;
+
+	//Used to know if the barrel is currently moving
+	FVector LastBarrelForward;
+
 };

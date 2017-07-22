@@ -24,6 +24,22 @@ void UTankAimingComponent::Initialize(UTankBarrel * InBarrel, UTankTurret * InTu
 	Turret = InTurret;
 }
 
+void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
+{
+	if (GetWorld()->GetTimeSeconds() - LastFireTime < FireCoolDownSeconds)
+	{
+		FiringStatus = EFiringStatus::Reloading;
+	}
+	else if (IsBarrelMoving())
+	{
+		FiringStatus = EFiringStatus::Aiming;
+	}
+	else
+	{
+		FiringStatus = EFiringStatus::Locked;
+	}
+}
+
 void UTankAimingComponent::AimAt(FVector HitLocation)
 {
 	FVector OutLaunchVelocity;
@@ -39,7 +55,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 
 void UTankAimingComponent::Fire()
 {
-	if (GetWorld()->GetTimeSeconds() - LastFireTime > FireCoolDownSeconds)
+	if (!(FiringStatus == EFiringStatus::Reloading))
 	{
 		LastFireTime = GetWorld()->GetTimeSeconds();
 		AProjectile * Proj = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, Barrel->GetSocketLocation("FireHole"), Barrel->GetSocketRotation("FireHole"));
@@ -49,7 +65,8 @@ void UTankAimingComponent::Fire()
 
 void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 {
-	FRotator CurrentRotation = Barrel->GetForwardVector().Rotation();
+	LastBarrelForward = Barrel->GetForwardVector();
+	FRotator CurrentRotation = LastBarrelForward.Rotation();
 	FRotator WantedRotation = AimDirection.Rotation();
 	FRotator Delta = WantedRotation - CurrentRotation;
 	
@@ -59,7 +76,8 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 
 void UTankAimingComponent::MoveTurret(FVector AimDirection)
 {
-	FRotator CurrentRotation = Barrel->GetForwardVector().Rotation();
+	LastBarrelForward = Barrel->GetForwardVector();
+	FRotator CurrentRotation = LastBarrelForward.Rotation();
 	FRotator WantedRotation = AimDirection.Rotation();
 	float DeltaX = WantedRotation.Yaw - CurrentRotation.Yaw;
 
@@ -71,3 +89,9 @@ void UTankAimingComponent::MoveTurret(FVector AimDirection)
 	Turret->ChangeAzimuth(DeltaX);
 
 }
+
+bool UTankAimingComponent::IsBarrelMoving()
+{
+	return !LastBarrelForward.Equals(Barrel->GetForwardVector(),0.001f);
+}
+
