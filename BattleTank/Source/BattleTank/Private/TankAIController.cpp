@@ -8,7 +8,7 @@
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	AimingComponent = GetControllerTank()->FindComponentByClass<UTankAimingComponent>();
+	AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 }
 
 void ATankAIController::Tick(float DeltaTime)
@@ -16,11 +16,6 @@ void ATankAIController::Tick(float DeltaTime)
 	AimingComponent->AimAt(GetEnemyTank()->GetActorLocation());
 	AimingComponent->Fire();
 	MoveToActor(GetEnemyTank(),5);
-}
-
-ATank * ATankAIController::GetControllerTank() const
-{
-	return Cast<ATank>(GetPawn());
 }
 
 ATank * ATankAIController::GetEnemyTank() const

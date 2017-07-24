@@ -16,6 +16,8 @@ UTankAimingComponent::UTankAimingComponent()
 	FiringStatus = EFiringStatus::Reloading;
 	FireCoolDownSeconds = 1;
 	LaunchSpeed = 4000;
+	MaxAmmo = 3;
+	CurrentAmmo = MaxAmmo;
 }
 
 void UTankAimingComponent::Initialize(UTankBarrel * InBarrel, UTankTurret * InTurret)
@@ -55,12 +57,18 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 
 void UTankAimingComponent::Fire()
 {
-	if (!(FiringStatus == EFiringStatus::Reloading))
+	if (!(FiringStatus == EFiringStatus::Reloading) && CurrentAmmo > 0)
 	{
+		CurrentAmmo--;
 		LastFireTime = GetWorld()->GetTimeSeconds();
 		AProjectile * Proj = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, Barrel->GetSocketLocation("FireHole"), Barrel->GetSocketRotation("FireHole"));
 		Proj->LaunchProjectile(LaunchSpeed);
 	}
+}
+
+int UTankAimingComponent::GetCurrentAmmo() const
+{
+	return CurrentAmmo;
 }
 
 void UTankAimingComponent::MoveBarrel(FVector AimDirection)

@@ -32,6 +32,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void Fire();
+	
+	UFUNCTION(BlueprintCallable)
+	int GetCurrentAmmo() const;
 
 	void AimAt(FVector HitLocation);
 
@@ -51,6 +54,11 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float LaunchSpeed;
+
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	int MaxAmmo;
+
+	int CurrentAmmo;
 
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<AProjectile> ProjectileBlueprint;
