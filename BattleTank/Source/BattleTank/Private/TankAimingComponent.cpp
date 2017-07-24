@@ -17,13 +17,18 @@ UTankAimingComponent::UTankAimingComponent()
 	FireCoolDownSeconds = 1;
 	LaunchSpeed = 4000;
 	MaxAmmo = 3;
-	CurrentAmmo = MaxAmmo;
 }
 
 void UTankAimingComponent::Initialize(UTankBarrel * InBarrel, UTankTurret * InTurret)
 {
 	Barrel = InBarrel;
 	Turret = InTurret;
+}
+
+void UTankAimingComponent::BeginPlay()
+{
+	Super::BeginPlay();
+	CurrentAmmo = MaxAmmo;
 }
 
 void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
