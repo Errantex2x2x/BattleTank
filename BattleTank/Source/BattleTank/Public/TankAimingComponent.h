@@ -39,6 +39,8 @@ public:
 
 	void AimAt(FVector HitLocation);
 
+	EFiringStatus GetFiringStatus();
+
 protected:
 	void MoveBarrel(FVector AimDirection);
 	void MoveTurret(FVector AimDirection);

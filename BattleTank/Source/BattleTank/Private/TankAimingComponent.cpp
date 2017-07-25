@@ -60,6 +60,11 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 	}
 }
 
+EFiringStatus UTankAimingComponent::GetFiringStatus()
+{
+	return FiringStatus;
+}
+
 void UTankAimingComponent::Fire()
 {
 	if (!(FiringStatus == EFiringStatus::Reloading) && CurrentAmmo > 0)

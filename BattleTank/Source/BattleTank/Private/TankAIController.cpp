@@ -14,7 +14,10 @@ void ATankAIController::BeginPlay()
 void ATankAIController::Tick(float DeltaTime)
 {
 	AimingComponent->AimAt(GetEnemyTank()->GetActorLocation());
-	AimingComponent->Fire();
+	
+	if(AimingComponent->GetFiringStatus() == EFiringStatus::Locked)
+		AimingComponent->Fire();
+
 	MoveToActor(GetEnemyTank(),5);
 }
 
