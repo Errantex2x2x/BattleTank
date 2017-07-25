@@ -24,6 +24,8 @@ AProjectile::AProjectile()
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
+	LaunchBlast->SnapTo(RootComponent);
+	LaunchBlast->AttachTo(RootComponent, NAME_None, EAttachLocation::KeepRelativeOffset);
 }
 
 // Called every frame
@@ -37,7 +39,8 @@ void AProjectile::LaunchProjectile(float Speed)
 	MovementComponent->SetVelocityInLocalSpace(FVector::ForwardVector * Speed);
 	MovementComponent->Activate();
 
-	LaunchBlast->Activate();
-	LaunchBlast->ActivateSystem();
+	LaunchBlast->Activate(true);
+	LaunchBlast->ActivateSystem(true);
+
 }
 
