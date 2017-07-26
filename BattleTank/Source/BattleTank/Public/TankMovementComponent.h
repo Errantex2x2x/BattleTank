@@ -18,6 +18,9 @@ class BATTLETANK_API UTankMovementComponent : public UNavMovementComponent
 
 public:
 
+	UPROPERTY(EditDefaultsOnly)
+	float AISpeedMultiplier;
+
 	UFUNCTION(BlueprintCallable)
 	void Initialize(UTankTrack * InTrackL, UTankTrack* InTrackR);
 

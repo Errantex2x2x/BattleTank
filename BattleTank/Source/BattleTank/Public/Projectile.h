@@ -23,17 +23,26 @@ public:
 
 	UFUNCTION()
 		void OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor, UPrimitiveComponent * OtherComponent, FVector NormalImpulse, const FHitResult & Hit);
+
+	void DeathTimerExpired();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	FTimerHandle DeathHandle;
 
 	UProjectileMovementComponent * MovementComponent;
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent * CollisionMesh;
 	UPROPERTY(VisibleAnywhere)
-		UParticleSystemComponent * LaunchBlast; 
-		UPROPERTY(VisibleAnywhere)
+	UParticleSystemComponent * LaunchBlast; 
+	UPROPERTY(VisibleAnywhere)
 		UParticleSystemComponent * ImpactBlast;
-		UPROPERTY(VisibleAnywhere)
-			URadialForceComponent * RadialForce;
+	UPROPERTY(VisibleAnywhere)
+		URadialForceComponent * RadialForce;
+	UPROPERTY(VisibleAnywhere, Category = "Setup")
+		float LifeSpanAfterHit;
+	UPROPERTY(VisibleAnywhere, Category = "Setup")
+		float ProjectileDamage;
 };

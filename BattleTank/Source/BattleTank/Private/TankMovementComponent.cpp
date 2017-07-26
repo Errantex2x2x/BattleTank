@@ -6,6 +6,7 @@
 
 void UTankMovementComponent::Initialize(UTankTrack * InTrackL, UTankTrack* InTrackR)
 {
+	AISpeedMultiplier = 10;
 	TrackL = InTrackL;
 	TrackR = InTrackR;
 }
@@ -28,8 +29,8 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
 	FVector AIForwardIntention = MoveVelocity.GetSafeNormal();
 	FVector CurrentDirection = GetOwner()->GetActorForwardVector();
 
-	IntendMoveForward(FVector::DotProduct(AIForwardIntention, CurrentDirection));
-	IntendTurn(FVector::CrossProduct(CurrentDirection, AIForwardIntention).Z);
+	IntendMoveForward(FVector::DotProduct(AIForwardIntention, CurrentDirection) * AISpeedMultiplier);
+	IntendTurn(FVector::CrossProduct(CurrentDirection, AIForwardIntention).Z * AISpeedMultiplier);
 
 	//UE_LOG(LogTemp, Log, TEXT("Requested move: %f"), FVector::DotProduct(AIForwardIntention, CurrentDirection));
 }

@@ -7,10 +7,12 @@ UTankTrack::UTankTrack()
 {
 	TrackMaxDrivingForce = 400000;
 	PrimaryComponentTick.bCanEverTick = true;
+	CurrentThrottle = 0;
 }
 
 void UTankTrack::BeginPlay()
 {
+	Super::BeginPlay();
 	OnComponentHit.AddDynamic(this, &UTankTrack::OnHit);
 	CurrentThrottle = 0;
 }
@@ -38,7 +40,6 @@ void UTankTrack::DriveTrack()
 
 void UTankTrack::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor, UPrimitiveComponent * OtherComponent, FVector NormalImpulse, const FHitResult & Hit)
 {
-	UE_LOG(LogTemp, Log, TEXT("GROUND"));
 	ApplySidewaysForce();
 	DriveTrack();
 	CurrentThrottle = 0;
