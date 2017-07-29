@@ -34,12 +34,18 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 		void AimingComponentFound(UTankAimingComponent * AimingComponentRef);
 
+
+	virtual void SetPawn(APawn* InPawn) override;
+
 private:
 	//Moves tank barrel so that it points towards the crosshair
 	void AimTowardsCrosshair();
 	//Returns wether we are aiming towards a collider, if true we load the location in the given variable
 	bool GetSightRayHitLocation(FVector &OutHitLocation) const;
 	bool GetLookVectorHitLocation(FVector WorldDir, FVector & OutHitLocation) const;
+
+	UFUNCTION()
+	void OnPawnDeath();
 
 	UTankAimingComponent * AimingComponent;
 };

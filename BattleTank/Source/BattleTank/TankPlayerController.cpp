@@ -30,6 +30,24 @@ ATank * ATankPlayerController::GetControllerTank() const
 	return Cast<ATank>(GetPawn());
 }
 
+void ATankPlayerController::SetPawn(APawn* InPawn)
+{
+	Super::SetPawn(InPawn);
+	if (InPawn)
+	{
+		auto Tank = Cast <ATank>(InPawn);
+		if (Tank)
+		{
+			Tank->OnDeath.AddUniqueDynamic(this, &ATankPlayerController::OnPawnDeath);
+		}
+	}
+}
+
+void ATankPlayerController::OnPawnDeath()
+{
+	StartSpectatingOnly();
+}
+
 void ATankPlayerController::AimTowardsCrosshair()
 {
 	if (!GetControllerTank()) return;
@@ -60,7 +78,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector WorldDir, FVector &
 {
 	FHitResult HitRes;
 	FVector StartLocation = PlayerCameraManager->GetCameraLocation();
-	if (GetWorld()->LineTraceSingleByChannel(HitRes, StartLocation, StartLocation + WorldDir * LineTraceRange, ECC_Visibility))
+	if (GetWorld()->LineTraceSingleByChannel(HitRes, StartLocation, StartLocation + WorldDir * LineTraceRange, ECC_Camera))
 	{
 		OutHitLocation = HitRes.Location;
 		return true;

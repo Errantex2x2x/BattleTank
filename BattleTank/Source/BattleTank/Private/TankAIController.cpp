@@ -13,12 +13,40 @@ void ATankAIController::BeginPlay()
 
 void ATankAIController::Tick(float DeltaTime)
 {
-	AimingComponent->AimAt(GetEnemyTank()->GetActorLocation());
-	
-	if(AimingComponent->GetFiringStatus() == EFiringStatus::Locked)
-		AimingComponent->Fire();
+	auto EnemyTank = GetEnemyTank();
 
-	MoveToActor(GetEnemyTank(),5);
+	if (EnemyTank)
+	{
+		AimingComponent->AimAt(EnemyTank->GetActorLocation());
+
+		if (AimingComponent->GetFiringStatus() == EFiringStatus::Locked)
+			AimingComponent->Fire();
+
+		MoveToActor(EnemyTank, 5);
+	}
+}
+
+void ATankAIController::SetPawn(APawn * InPawn)
+{
+	Super::SetPawn(InPawn);
+
+	if (InPawn)
+	{
+		ATank * Tank = Cast<ATank> (InPawn);
+		
+		if (!Tank)
+			return;
+
+		Tank->OnDeath.AddUniqueDynamic(this, &ATankAIController::OnPawnDeath);
+	}
+
+}
+
+void ATankAIController::OnPawnDeath()
+{
+	//GetPawn()->SetLifeSpan(0.2f);
+	GetPawn()->DetachFromControllerPendingDestroy();
+	
 }
 
 ATank * ATankAIController::GetEnemyTank() const
